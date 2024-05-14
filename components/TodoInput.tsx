@@ -7,6 +7,7 @@ import {
 	View,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = {
 	addTodo: (todo: string) => void;
@@ -14,26 +15,33 @@ type Props = {
 
 export default function TodoInput({ addTodo }: Props) {
 	const inputValueText = useRef<string>("");
+	const inputRef = useRef<TextInput>(null);
 
 	return (
-		<KeyboardAvoidingView behavior="padding">
+		<KeyboardAvoidingView keyboardVerticalOffset={50} behavior="padding">
 			<View style={styles.inputContainer}>
-				<View style={styles.inputInnerContainer}>
-					<TextInput
-						style={styles.input}
-						placeholder="Fara út með ruslið..."
-						onChangeText={(text) => {
-							inputValueText.current = text;
-						}}
-					/>
-					<Pressable
-						onPress={() => {
-							addTodo(inputValueText.current);
-						}}
-					>
-						<Ionicons name="send" size={24} color="#5438DC" />
-					</Pressable>
-				</View>
+				<SafeAreaView edges={["bottom"]}>
+					<View style={styles.inputInnerContainer}>
+						<TextInput
+							ref={inputRef}
+              autoComplete="off"
+							style={styles.input}
+							placeholder="Fara út með ruslið..."
+							onChangeText={(text) => {
+								inputValueText.current = text;
+							}}
+						/>
+						<Pressable
+							onPress={() => {
+								inputRef.current?.clear();
+								inputRef.current?.blur();
+								addTodo(inputValueText.current);
+							}}
+						>
+							<Ionicons name="send" size={24} color="#5438DC" />
+						</Pressable>
+					</View>
+				</SafeAreaView>
 			</View>
 		</KeyboardAvoidingView>
 	);
@@ -52,6 +60,10 @@ const styles = StyleSheet.create({
 		backgroundColor: "white",
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
+		shadowColor: "black",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.3,
+		shadowRadius: 3.84,
 	},
 	input: {
 		flex: 1,
