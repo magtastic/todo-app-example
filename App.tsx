@@ -1,10 +1,24 @@
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function App() {
+  const [count, setCount] = useState(0)
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Text style={styles.title}>Hallo!</Text>
+      <Text style={styles.title} onPress={() => {
+        setCount(count + 1)
+      }}>{count}</Text>
+      <KeyboardAvoidingView behavior="padding">
+      <View style={styles.inputContainer}>
+        <TextInput 
+          style={styles.input}
+          placeholder="Fara út með ruslið..."
+        />
+      </View>
+      </KeyboardAvoidingView>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +27,21 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'orange',
+    justifyContent: 'flex-end',
   },
+  title: {
+    fontSize: 80,
+    fontWeight: 'bold',
+  },
+  inputContainer: {
+    padding: 20,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+    input: {
+    borderWidth: 1,
+
+}
 });
